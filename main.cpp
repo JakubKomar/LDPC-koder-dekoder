@@ -1,7 +1,6 @@
 #include <iostream>
 #include "main.hpp"
 
-using std::cout, std::endl, std::string; // using declaration
 
 int main(int argc, char *argv[]) {
 
@@ -12,18 +11,24 @@ int main(int argc, char *argv[]) {
         printhelp();
     }
     else if(argv[1] == string("-e") ){
-        coder c;
-        c.codeString("ahoj");
+        coder c;       
+        cout<<c.codeString(getString())<<endl;
     }
     else if(argv[1] == string("-d")){
         decoder d;
-        d.decodeString("ahoj");
+        cout<<d.decodeString(getString())<<endl;
     }
     else{
         printhelp();
     }
 
     return 0;
+}
+
+string getString() {
+    string input;
+    getline(cin, input,'\0');
+    return input;
 }
 
 void printhelp() {

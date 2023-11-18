@@ -1,7 +1,7 @@
 
 #include <iostream>
 #include <string>
-
+using  std::cout, std::endl, std::string; // using declaration
 
 class decoder
 {
@@ -10,5 +10,6 @@ private:
 public:
     decoder();
     ~decoder();
-    void decodeString(std::string input);
+    string decodeString(std::string input);
+    string formatString(string input);
 };

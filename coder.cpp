@@ -1,5 +1,4 @@
 #include "coder.hpp"
-using  std::cout, std::endl, std::string; // using declaration
 
 coder::coder()
 {
@@ -10,6 +9,19 @@ coder::~coder()
 }
 
 
-void coder::codeString(std::string input){
-    cout<<"encrypt"<<endl;
+string coder::codeString(string input){
+
+    input= formatString(input);
+
+    return input;
+}
+
+string coder::formatString(string input){
+    string output;
+    for (auto & c: input){
+        if((c>='a' && c<='z') || (c>='A'&&c<='Z')|| (c>='0'&&c<='9')){
+            output+=c;
+        }
+    }
+    return output;
 }
