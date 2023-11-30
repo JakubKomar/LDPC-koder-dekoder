@@ -5,8 +5,9 @@
 int main(int argc, char *argv[]) {
 
     matrixMaker a;
-    
-
+    auto H =a.makeParityCheckMatrix(16,7,8,42);
+    std::cout<<H;
+    exit(0);
     if(argc != 2) {
         printhelp();
     }
