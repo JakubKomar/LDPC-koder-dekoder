@@ -1,8 +1,11 @@
 #include <iostream>
 #include "main.hpp"
-
+#include "matrixMaker.hpp"
 
 int main(int argc, char *argv[]) {
+
+    matrixMaker a;
+    
 
     if(argc != 2) {
         printhelp();
