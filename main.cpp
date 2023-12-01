@@ -1,12 +1,18 @@
 #include <iostream>
 #include "main.hpp"
 #include "matrixMaker.hpp"
-
+#include "opencv2/opencv.hpp"
 int main(int argc, char *argv[]) {
 
+
     matrixMaker a;
-    auto H =a.makeParityCheckMatrix(16,7,8,42);
-    std::cout<<H;
+    auto H =a.makeParityCheckMatrix(16,7,8,498498);
+
+    auto G = a.makeCodingMatrix(H);
+
+    std::cout<<H<<std::endl<<
+        std::endl<<G<<std::endl<<std::endl;
+
     exit(0);
     if(argc != 2) {
         printhelp();

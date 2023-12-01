@@ -2,6 +2,11 @@ import numpy as np
 from pyldpc import make_ldpc, encode
 import sys
 
-_, G = make_ldpc(16, 7, 8,seed=42,systematic=False)
+H, G = make_ldpc(16, 7, 8,seed=42,systematic=False)
+
+
+
 np.set_printoptions(threshold=sys.maxsize)
+print(H)
+print("")
 print(G)
