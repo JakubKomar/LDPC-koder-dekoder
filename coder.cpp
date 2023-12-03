@@ -40,9 +40,14 @@ string coder::formatString(string input){
     return output;
 }
 
- cv::Mat coder::encode(cv::Mat v, cv::Mat G){
-    cout<<"v:"<<endl<<v<<endl;
-    cout<<"G:"<<endl<<G<<endl;
-    cv::Mat d = binaryProduct(G, v.t());	
+ cv::Mat coder::encode(cv::Mat G, cv::Mat v){
+    cout<<"G"<<endl<<G<<endl;
+    cout<<"v"<<endl<<v<<endl;
+    cv::Mat d = shityMatrixMul(G, v.t());	
+
+    d.forEach<int>([](int& item, const int* position) -> void {
+        item %= 2;
+    });
+
     return d;
  }

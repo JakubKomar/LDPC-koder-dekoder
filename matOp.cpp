@@ -1,5 +1,5 @@
 #include "matOp.hpp"
-
+using std::string, std::vector, std::cout,std::cerr,std::endl;
 std::pair<cv::Mat, std::optional<cv::Mat>> gaussJordan(cv::Mat H, bool change = false)
 {
     std::optional<cv::Mat> P_return = std::nullopt;
@@ -75,4 +75,17 @@ cv::Mat binaryProduct(cv::Mat X,  cv::Mat Y) {
     });
    
     return A;
+}
+
+cv::Mat shityMatrixMul( cv::Mat X, cv::Mat Y){
+
+    cv::Mat result(1,X.rows, CV_32S, cv::Scalar(0));
+
+    for (auto i = 0; i < X.rows; ++i) {
+        for (auto j = 0; j < X.cols; ++j) {
+            result.at<int>(0, i) += X.at<int>(i, j) * Y.at<int>(j, 0);
+        }
+    }
+
+    return result;
 }

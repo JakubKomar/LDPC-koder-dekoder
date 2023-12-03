@@ -19,8 +19,7 @@ int main(int argc, char *argv[]) {
     const auto H =a.makeParityCheckMatrix(n,d_v,d_c,SEED);
     const auto G = a.makeCodingMatrix(H);
 
-    c.encode(bMessage,G);
-    std::cout<<bMessage<<std::endl;
+    std::cout<<c.encode(G,bMessage)<<std::endl;
     exit(0);
     /*
     if(argc != 2) {

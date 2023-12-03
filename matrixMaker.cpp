@@ -55,9 +55,6 @@ cv::Mat matrixMaker::makeParityCheckMatrix(int n_code, int d_v, int d_c, int see
 
 cv::Mat matrixMaker::makeCodingMatrix(cv::Mat H)
 {
-    cout<<"H:"<<endl<<H<<endl;
-
-
     int n_code = H.cols; 
 
     // DOUBLE GAUSS-JORDAN:
