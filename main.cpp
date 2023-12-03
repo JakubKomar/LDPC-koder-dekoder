@@ -19,9 +19,18 @@ int main(int argc, char *argv[]) {
     const auto H =a.makeParityCheckMatrix(n,d_v,d_c,SEED);
     const auto G = a.makeCodingMatrix(H);
 
-    std::cout<<c.encode(G,bMessage)<<std::endl;
+    const auto cMessage=c.encode(G,bMessage);
+    const string codedMassege=c.matToString(cMessage);
+    std::cout<<codedMassege<<std::endl;
+
+    decoder d;
+
+    const auto dMessage=d.extractVector(codedMassege);
+    
+    
+    
     exit(0);
-    /*
+  /*  
     if(argc != 2) {
         printhelp();
     }
@@ -29,8 +38,22 @@ int main(int argc, char *argv[]) {
         printhelp();
     }
     else if(argv[1] == string("-e") ){
-        coder c;       
-        cout<<c.codeString(getString())<<endl;
+        coder c;
+        matrixMaker a;
+
+        auto bMessage=c.stringToBinary("a");
+
+        const int inStrLen=bMessage.cols;
+        const int n = inStrLen*2 ;
+        const int d_v = inStrLen-1;
+        const int d_c = inStrLen;
+        
+        #define SEED 42
+        const auto H =a.makeParityCheckMatrix(n,d_v,d_c,SEED);
+        const auto G = a.makeCodingMatrix(H);
+
+        const auto cMessage=c.encode(G,bMessage);
+        std::cout<<c.matToString(cMessage)<<std::endl;  
     }
     else if(argv[1] == string("-d")){
         decoder d;
@@ -48,6 +71,7 @@ string getString() {
     getline(cin, input,'\0');
     return input;
 }
+
 
 void printhelp() {
     cout << 

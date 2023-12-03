@@ -15,6 +15,9 @@ public:
     ~coder();
     cv::Mat stringToBinary(std::string input);
     cv::Mat encode(cv::Mat input, cv::Mat G);
+    string matToString(cv::Mat X);
+    
+    
 private:
     string formatString(std::string input);
 };

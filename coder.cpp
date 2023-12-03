@@ -41,8 +41,6 @@ string coder::formatString(string input){
 }
 
  cv::Mat coder::encode(cv::Mat G, cv::Mat v){
-    cout<<"G"<<endl<<G<<endl;
-    cout<<"v"<<endl<<v<<endl;
     cv::Mat d = shityMatrixMul(G, v.t());	
 
     d.forEach<int>([](int& item, const int* position) -> void {
@@ -50,4 +48,16 @@ string coder::formatString(string input){
     });
 
     return d;
+ }
+
+ string coder::matToString(cv::Mat X){
+    std::stringstream ss;
+    
+    for (int i = 0; i < X.rows; ++i) {
+        for (int j = 0; j < X.cols; ++j) {
+            ss << X.at<int>(i, j);
+        }
+    }
+
+    return ss.str();
  }

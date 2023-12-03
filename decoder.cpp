@@ -8,10 +8,11 @@ decoder::~decoder()
 {
 }
 
-string decoder::decodeString(string input){
+cv::Mat decoder::extractVector(string input){
     string formatedInput= formatString(input);
+    auto mat= this->stringToMat(formatedInput);
 
-    return formatedInput;
+    return mat;
 }
 
 string decoder::formatString(string input){
@@ -20,11 +21,21 @@ string decoder::formatString(string input){
         if(c=='0' || c=='1'){
             output+=c;
         }
-    }/*
-    for(int i=0;i<output.length();i+=8){
-        string temp=output.substr(i,8);
-        int num=stoi(temp,0,2);
-        output[i/8]=num;
-    }*/
+    }
     return output;
 }
+
+cv::Mat decoder::stringToMat(string X){
+    cv::Mat output;
+    
+    for (auto & c: X){
+        output.push_back(c=='0'?0:1);
+    }
+
+    return output.t();
+ }
+
+ cv::Mat get_message(cv::Mat G,cv::Mat input){
+    
+    return G*input;
+ }
