@@ -8,7 +8,7 @@ BIN=bms
 ZIP=222161.zip
 CC=g++ 
 RM=rm -f
-SRC=main.cpp coder.cpp decoder.cpp matrixMaker.cpp
+SRC=main.cpp coder.cpp decoder.cpp matrixMaker.cpp matOp.cpp
 
 .PHONY: all build run pack clean
 

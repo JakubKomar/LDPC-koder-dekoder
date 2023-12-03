@@ -2,18 +2,27 @@
 #include "main.hpp"
 #include "matrixMaker.hpp"
 #include "opencv2/opencv.hpp"
+
+
 int main(int argc, char *argv[]) {
-
-
+    coder c;
     matrixMaker a;
-    auto H =a.makeParityCheckMatrix(16,7,8,498498);
 
-    auto G = a.makeCodingMatrix(H);
+    auto bMessage=c.stringToBinary("a");
 
-    std::cout<<H<<std::endl<<
-        std::endl<<G<<std::endl<<std::endl;
+    const int inStrLen=bMessage.cols;
+    const int n = inStrLen*2 ;
+    const int d_v = inStrLen-1;
+    const int d_c = inStrLen;
+    
+    #define SEED 42
+    const auto H =a.makeParityCheckMatrix(n,d_v,d_c,SEED);
+    const auto G = a.makeCodingMatrix(H);
 
+    c.encode(bMessage,G);
+    std::cout<<bMessage<<std::endl;
     exit(0);
+    /*
     if(argc != 2) {
         printhelp();
     }
@@ -32,7 +41,7 @@ int main(int argc, char *argv[]) {
         printhelp();
     }
 
-    return 0;
+    return 0;*/
 }
 
 string getString() {
