@@ -9,7 +9,7 @@ coder::~coder()
 }
 
 
- cv::Mat coder::stringToBinary(string input){
+cv::Mat coder::stringToBinary(string input){
     input= formatString(input);
     
     cv::Mat binaryVector(1, input.length()*8, CV_32S);

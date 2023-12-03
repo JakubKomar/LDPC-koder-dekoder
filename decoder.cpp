@@ -36,6 +36,11 @@ cv::Mat decoder::stringToMat(string X){
  }
 
  cv::Mat get_message(cv::Mat G,cv::Mat input){
-    
-    return G*input;
+
+    auto result=gaussElimination(G,input);
+    auto rtG=result.first;
+    auto rx=result.second;
+    cout<<"rtG\n"<<rtG<<endl;
+    cout<<"rx\n"<<rx<<endl;
+    return G;
  }

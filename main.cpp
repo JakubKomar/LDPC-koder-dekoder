@@ -5,29 +5,58 @@
 
 
 int main(int argc, char *argv[]) {
+
+    decoder d;
+    /*cv::Mat dMessage = (cv::Mat_<int>(1, 16) << 1,0,0,1,0,1,0,1,1,1,1,0,0,0,0,1);
+    cv::Mat H = (cv::Mat_<int>(16, 8) <<
+        1,1,0,0,0,0,1,0,
+        1,0,0,0,0,0,0,0,
+        0,0,0,0,1,1,1,0,
+        0,0,1,0,1,1,0,0,
+        0,0,0,0,1,0,0,0,
+        1,0,0,1,0,0,0,1,
+        1,1,0,1,0,0,1,1,
+        0,0,1,0,1,0,1,0,
+        0,1,1,1,1,1,1,1,
+        0,1,0,0,0,0,0,0,
+        0,0,1,0,0,0,0,0,
+        0,0,0,1,0,0,0,0,
+        0,0,0,0,1,0,0,0,
+        0,0,0,0,0,1,0,0,
+        0,0,0,0,0,0,1,0,
+        0,0,0,0,0,0,0,1
+    );
+    auto result=gaussElimination(H ,dMessage);
+    auto rtG=result.first;
+    auto rx=result.second;
+    cout<<"rtG\n"<<rtG<<endl;
+    cout<<"rx\n"<<rx<<endl;*/
+    
     coder c;
     matrixMaker a;
 
-    auto bMessage=c.stringToBinary("a");
+    auto bMessage=c.stringToBinary("ah");
 
     const int inStrLen=bMessage.cols;
     const int n = inStrLen*2 ;
     const int d_v = inStrLen-1;
     const int d_c = inStrLen;
     
-    #define SEED 42
-    const auto H =a.makeParityCheckMatrix(n,d_v,d_c,SEED);
+    #define SEED 4648
+    const auto H = a.makeParityCheckMatrix(n,d_v,d_c,SEED);
     const auto G = a.makeCodingMatrix(H);
+    cout<<"H\n"<<H<<endl;
+    cout<<"G\n"<<G<<endl;
 
     const auto cMessage=c.encode(G,bMessage);
     const string codedMassege=c.matToString(cMessage);
-    std::cout<<codedMassege<<std::endl;
+    cout<< "codeded:" <<codedMassege<<endl;
 
-    decoder d;
+    /*decoder d;
 
     const auto dMessage=d.extractVector(codedMassege);
-    
-    
+    */
+
     
     exit(0);
   /*  
