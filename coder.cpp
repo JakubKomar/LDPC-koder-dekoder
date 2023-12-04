@@ -41,7 +41,7 @@ string coder::formatString(string input){
 }
 
 cv::Mat coder::encode(cv::Mat G, cv::Mat v){
-    cv::Mat d = shityMatrixMul(G, v.t());	
+    cv::Mat d = matOp::shityMatrixMul(G, v.t());	
 
     d.forEach<int>([](int& item, const int* position) -> void {
         item %= 2;

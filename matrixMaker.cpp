@@ -59,11 +59,11 @@ cv::Mat matrixMaker::makeCodingMatrix(cv::Mat H)
 
     // DOUBLE GAUSS-JORDAN:
 
-    auto result = gaussJordan(H.t(), true);
+    auto result = matOp::gaussJordan(H.t(), true);
     cv::Mat Href_colonnes = result.first;
     cv::Mat tQ = result.second.value();
 
-    cv::Mat Href_diag =gaussJordan(Href_colonnes.t(), false).first;
+    cv::Mat Href_diag =matOp::gaussJordan(Href_colonnes.t(), false).first;
 
 
     cv::Mat Q = tQ.t();
@@ -73,7 +73,7 @@ cv::Mat matrixMaker::makeCodingMatrix(cv::Mat H)
     cv::Mat Y = cv::Mat::zeros(n_code, n_bits, CV_32S);
 
     Y.rowRange( n_code-n_bits, n_code)=cv::Mat::eye(n_bits, n_bits, CV_32S);
-    cv::Mat tG = binaryProduct(Q, Y);
+    cv::Mat tG = matOp::binaryProduct(Q, Y);
 
     return tG;
 }

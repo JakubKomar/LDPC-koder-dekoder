@@ -8,13 +8,14 @@
 class matrixMaker
 {
 private:
-    /* data */
+
 public:
-    matrixMaker(/* args */);
+    matrixMaker();
+    ~matrixMaker();
     cv::Mat makeParityCheckMatrix(int n_code, int d_v, int d_c, int seed=0);
     cv::Mat makeCodingMatrix(cv::Mat H);
-    cv::Mat shuffleBlocks(cv::Mat matrix, std::default_random_engine *rd) ;
     cv::Mat matrixFromFile(string path);
     void saveMatrixToCSV(const cv::Mat& matrix, const std::string& filePath) ;
-    ~matrixMaker();
+private:
+    cv::Mat shuffleBlocks(cv::Mat matrix, std::default_random_engine *rd) ;
 };
