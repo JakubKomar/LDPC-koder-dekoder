@@ -44,15 +44,12 @@ int main(int argc, char *argv[]) {
         
         #define SEED 42
         cv::Mat H =a.makeParityCheckMatrix(n,d_v,d_c,SEED);
+        cv::Mat G = a.makeCodingMatrix(H);
+
+
         if(matFilePath!="")
             a.saveMatrixToCSV(H,matFilePath);
         
-        cv::Mat G = a.makeCodingMatrix(H);
-
-        cout<<"H:"<<endl<<H<<endl;
-        cout<<"G:"<<endl<<G<<endl;
-
-
         const auto cMessage=c.encode(G,bMessage);
         std::cout<<c.matToString(cMessage)<<std::endl;  
     }
@@ -63,9 +60,7 @@ int main(int argc, char *argv[]) {
         matrixMaker m;
 
         cv::Mat H = m.matrixFromFile(matFilePath);
-        cout<<"H:"<<endl<<H<<endl;
         cv::Mat G = m.makeCodingMatrix(H);
-        cout<<"G:"<<endl<<G<<endl;
 
         decoder c;
 

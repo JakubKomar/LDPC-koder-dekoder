@@ -8,7 +8,6 @@ coder::~coder()
 {
 }
 
-
 cv::Mat coder::stringToBinary(string input){
     input= formatString(input);
     
@@ -27,7 +26,6 @@ cv::Mat coder::stringToBinary(string input){
     return binaryVector;
 }
 
-
 string coder::formatString(string input){
     string output;
 
@@ -41,7 +39,7 @@ string coder::formatString(string input){
 }
 
 cv::Mat coder::encode(cv::Mat G, cv::Mat v){
-    cv::Mat d = matOp::shityMatrixMul(G, v.t());	
+    cv::Mat d = matOp::matrixMulNoRestrictions(G, v.t());	
 
     d.forEach<int>([](int& item, const int* position) -> void {
         item %= 2;

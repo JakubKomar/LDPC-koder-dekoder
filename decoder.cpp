@@ -35,14 +35,8 @@ cv::Mat decoder::stringToMat(string X){
     return output.t();
 }
 
-int binaryProduct2(const cv::Mat& a, const cv::Mat& b) {   
-    auto result = matOp::shityMatrixMul(a, b.t());
-    
-    return result.at<int>(0, 0) %2;
-}
-
 cv::Mat decoder::get_message(cv::Mat G,cv::Mat r){
-    int n = G.rows;
+
     int k = G.cols;
 
     auto result = matOp::gaussElimination(G, r); 
@@ -54,11 +48,9 @@ cv::Mat decoder::get_message(cv::Mat G,cv::Mat r){
     message.at<int>(0, k - 1) = rx.at<int>(0, k - 1);
     for (int i = k - 2; i >= 0; --i) {
         message.at<int>(0, i) = rx.at<int>(0, i);
-        message.at<int>(0, i) -= binaryProduct2(rtG.row(i).colRange(i + 1, k), message.colRange(i + 1, k)); 
+        message.at<int>(0, i) -= matOp::binaryProductInt(rtG.row(i).colRange(i + 1, k), message.colRange(i + 1, k)); 
     }
-    message.forEach<int>([](int& item, const int* position) -> void {
-        item %= 2;
-    });
+    message.forEach<int>([](int& item, const int* position) -> void {item %= 2; });
     return cv::abs(message);
 }
 

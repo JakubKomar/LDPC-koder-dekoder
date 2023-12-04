@@ -11,7 +11,7 @@ std::pair<cv::Mat, std::optional<cv::Mat>> gaussJordan(cv::Mat H, bool change = 
     int m = A.rows;
     int n = A.cols;
 
-    cv::Mat P; // permutation matrix
+    cv::Mat P; 
     if (change) {
         P = cv::Mat::eye(m, m, CV_32S);
     }
@@ -71,15 +71,19 @@ cv::Mat binaryProduct(cv::Mat X,  cv::Mat Y) {
     cv::Mat A=X*Y;
     A.convertTo(A, CV_32S);
 
-    // Perform modulo 2 arithmetic
-    A.forEach<int>([](int& item, const int* position) -> void {
-        item %= 2;
-    });
+    A.forEach<int>([](int& item, const int* position) -> void {item %= 2; });
 
     return A;
 }
 
-cv::Mat shityMatrixMul( cv::Mat X, cv::Mat Y){
+int binaryProductInt(const cv::Mat& a, const cv::Mat& b) {   
+    auto result = matOp::matrixMulNoRestrictions(a, b.t());
+    
+    return result.at<int>(0, 0) %2;
+}
+
+
+cv::Mat matrixMulNoRestrictions( cv::Mat X, cv::Mat Y){
 
     cv::Mat result(1,X.rows, CV_32S, cv::Scalar(0));
 

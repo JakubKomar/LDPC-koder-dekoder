@@ -9,7 +9,6 @@ using  std::cout, std::endl, std::string;
 
 class decoder
 {
-private:
   
 public:
     decoder();
@@ -21,4 +20,5 @@ public:
 private:
     string formatString(string input);
     cv::Mat stringToMat(string X);
+    int binaryProduct2(const cv::Mat& a, const cv::Mat& b);
 };
