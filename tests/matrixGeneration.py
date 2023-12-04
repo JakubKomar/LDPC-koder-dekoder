@@ -45,6 +45,9 @@ print("H\n",H)
 print("G\n",G)
 
 y = encode(G, bit_matrix, snr)
+codedMassage= (y > 0).astype(int)
+print("Coded message:",codedMassage)
+
 
 d = decode(H, y, snr)
 x = get_message(G, d)

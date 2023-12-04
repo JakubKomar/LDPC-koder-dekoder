@@ -16,7 +16,6 @@ public:
     ~decoder();
     cv::Mat extractVector(std::string input);
     cv::Mat decode(cv::Mat H,cv::Mat input, int max_iter=1000);
-    cv::Mat get_message(cv::Mat G,cv::Mat input);
 private:
     string formatString(string input);
     cv::Mat stringToMat(string X);

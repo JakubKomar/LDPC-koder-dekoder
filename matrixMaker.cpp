@@ -99,3 +99,56 @@ cv::Mat matrixMaker::shuffleBlocks(cv::Mat matrix, std::default_random_engine * 
     }
     return matrix;
 }
+
+cv::Mat matrixMaker::matrixFromFile(string filePath){
+        std::ifstream file(filePath);
+    if (!file.is_open()) {
+        std::cerr << "Unable to open file: " << filePath << std::endl;
+        throw std::invalid_argument("Unable to open file.");
+    }
+
+    std::vector<std::vector<int>> values;
+
+    std::string line;
+    while (std::getline(file, line)) {
+        std::istringstream lineStream(line);
+        std::string cell;
+        std::vector<int> row;
+        while (std::getline(lineStream, cell, ',')) {
+            row.push_back(std::stod(cell));
+        }
+        values.push_back(row);
+    }
+
+    // Vytvoření matice z načtených hodnot
+    int rows = values.size();
+    int cols = (rows > 0) ? values[0].size() : 0;
+    cv::Mat matrix(rows, cols, CV_32S);
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            matrix.at<int>(i, j) = values[i][j];
+        }
+    }
+
+    return matrix;
+}
+
+void matrixMaker::saveMatrixToCSV(const cv::Mat& matrix, const std::string& filePath) {
+
+    std::ofstream file(filePath);
+    if (!file.is_open()) {
+        std::cerr << "Unable to open file: " << filePath << std::endl;
+        return;
+    }
+
+    for (int i = 0; i < matrix.rows; ++i) {
+        for (int j = 0; j < matrix.cols; ++j) {
+            file << matrix.at<int>(i, j);
+            if (j < matrix.cols - 1) {
+                file << ",";
+            }
+        }
+        file << "\n";
+    }
+    file.close();
+}

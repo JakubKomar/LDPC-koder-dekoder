@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bms",
-            "args": ["1","123","--solver","a_star", "--easy-mode", "120","--heuristic","student"],
+            "args": ["-d","-M","matice.csv"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

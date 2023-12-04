@@ -40,17 +40,17 @@ string coder::formatString(string input){
     return output;
 }
 
- cv::Mat coder::encode(cv::Mat G, cv::Mat v){
+cv::Mat coder::encode(cv::Mat G, cv::Mat v){
     cv::Mat d = shityMatrixMul(G, v.t());	
 
     d.forEach<int>([](int& item, const int* position) -> void {
         item %= 2;
     });
-
+    cv::bitwise_xor(d, 1, d);
     return d;
- }
+}
 
- string coder::matToString(cv::Mat X){
+string coder::matToString(cv::Mat X){
     std::stringstream ss;
     
     for (int i = 0; i < X.rows; ++i) {
@@ -60,4 +60,4 @@ string coder::formatString(string input){
     }
 
     return ss.str();
- }
+}

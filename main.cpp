@@ -1,73 +1,42 @@
 #include "main.hpp"
 
+enum mode {ENCODE,DECODE,NOTSET};
 
 int main(int argc, char *argv[]) {
-/*
-    decoder d;
-    /*cv::Mat dMessage = (cv::Mat_<int>(1, 16) << 1,0,0,1,0,1,0,1,1,1,1,0,0,0,0,1);
-    cv::Mat H = (cv::Mat_<int>(16, 8) <<
-        1,1,0,0,0,0,1,0,
-        1,0,0,0,0,0,0,0,
-        0,0,0,0,1,1,1,0,
-        0,0,1,0,1,1,0,0,
-        0,0,0,0,1,0,0,0,
-        1,0,0,1,0,0,0,1,
-        1,1,0,1,0,0,1,1,
-        0,0,1,0,1,0,1,0,
-        0,1,1,1,1,1,1,1,
-        0,1,0,0,0,0,0,0,
-        0,0,1,0,0,0,0,0,
-        0,0,0,1,0,0,0,0,
-        0,0,0,0,1,0,0,0,
-        0,0,0,0,0,1,0,0,
-        0,0,0,0,0,0,1,0,
-        0,0,0,0,0,0,0,1
-    );
-    auto result=gaussElimination(H ,dMessage);
-    auto rtG=result.first;
-    auto rx=result.second;
-    cout<<"rtG\n"<<rtG<<endl;
-    cout<<"rx\n"<<rx<<endl;
-    */
-    coder c;
-    matrixMaker a;
 
-    auto bMessage=c.stringToBinary("a");
+    mode m = NOTSET;
+    string matFilePath="";
 
-    const int inStrLen=bMessage.cols;
-    const int n = inStrLen*2 ;
-    const int d_v = inStrLen-1;
-    const int d_c = inStrLen;
-    
-    #define SEED 4648
-    const auto H = a.makeParityCheckMatrix(n,d_v,d_c,SEED);
-    const auto G = a.makeCodingMatrix(H);
-    cout<<"H\n"<<H<<endl;
-    cout<<"G\n"<<G<<endl;
-
-    const auto cMessage=c.encode(G,bMessage);
-    const string codedMassege=c.matToString(cMessage);
-    cout<< "codeded:" <<codedMassege<<endl;
-
-    /*decoder d;
-
-    const auto dMessage=d.extractVector(codedMassege);
-    */
-
-    
-    exit(0);
-  /*  
-    if(argc != 2) {
-        printhelp();
+    for(int i = 1; i < argc; i++) {
+        string arg=argv[i];
+        if(string(arg) == "-h" || arg == string("--help")) {
+            printhelp();
+        }
+        else if(arg == string("-e") && m == NOTSET) {
+            m = ENCODE;
+            
+        }
+        else if(arg == string("-d")&& m == NOTSET){
+            m = DECODE;
+        }
+        else if(arg == string("-M")){
+            if(i+1>argc)
+                throw std::invalid_argument("Missing argument after -M");
+            matFilePath=argv[i+1];
+            i++;
+        }
+        else{
+            printhelp();
+        }
     }
-    else if(string(argv[1]) == "-h" || argv[1] == string("--help")) {
+
+    if(m==NOTSET)
         printhelp();
-    }
-    else if(argv[1] == string("-e") ){
+    else if(m==ENCODE){
         coder c;
         matrixMaker a;
 
-        auto bMessage=c.stringToBinary("a");
+        cv::Mat bMessage=c.stringToBinary("a");
 
         const int inStrLen=bMessage.cols;
         const int n = inStrLen*2 ;
@@ -75,26 +44,45 @@ int main(int argc, char *argv[]) {
         const int d_c = inStrLen;
         
         #define SEED 42
-        const auto H =a.makeParityCheckMatrix(n,d_v,d_c,SEED);
-        const auto G = a.makeCodingMatrix(H);
+        cv::Mat H =a.makeParityCheckMatrix(n,d_v,d_c,SEED);
+        if(matFilePath!="")
+            a.saveMatrixToCSV(H,matFilePath);
+        
+        cv::Mat G = a.makeCodingMatrix(H);
+
+        cout<<"H:"<<endl<<H<<endl;
+        cout<<"G:"<<endl<<G<<endl;
+
 
         const auto cMessage=c.encode(G,bMessage);
         std::cout<<c.matToString(cMessage)<<std::endl;  
     }
-    else if(argv[1] == string("-d")){
-        decoder d;
-        cout<<d.decodeString(getString())<<endl;
-    }
-    else{
-        printhelp();
-    }
+    else if(m==DECODE){
+        if(matFilePath=="")
+            throw std::invalid_argument("Missing argument -M");
+        matrixMaker m;
+        decoder c;
+        cv::Mat H = m.matrixFromFile(matFilePath);
+        cout<<"H:"<<endl<<H<<endl;
+        cv::Mat G = m.makeCodingMatrix(H);
+        cout<<"G:"<<endl<<H<<endl;
+        cv::Mat bMessage=c.extractVector(getString());
 
-    return 0;*/
+        const int inStrLen=bMessage.cols;
+        const int n = inStrLen ;
+        const int d_v = inStrLen/2-1;
+        const int d_c = inStrLen/2;
+        
+    }
+    else
+        printhelp();
+    
+    return 0;
 }
 
 string getString() {
     string input;
-    getline(cin, input,'\0');
+    getline(cin, input,'\n');
     return input;
 }
 
@@ -104,11 +92,13 @@ void printhelp() {
 R""""(Aplikace realizuje kódovaní (encoding) a dekódovaní (decoding) vstupnej správy pomocí Low-density parity-check code (LDPC). Kódový pomer LDPC kódera je 1/2
 Autor: Bc. Jakub Komárek (xkomar33)
 Použití:
-    ./bms [ [ -e | -d ] << "vstupní řetězec"| -h
+    ./bms [ -M "matice.csv" [ -e | -d ] << "vstupní řetězec"| -h
 
 Argumenty:
     -e << vstup=[ASCII znaky] (slouží pro zakódovaní)
     -d << vstup=[znaky hodnôt jednotlivých bitov] (slouží pro dekódovaní)
     -h – parametr označující výpis nápovědy
+    -M "matice.csv" - matice pro kodovani/dekodovani, pokud není je vygenerována
 )"""";
+    exit(0);    
 }
