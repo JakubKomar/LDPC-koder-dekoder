@@ -1,8 +1,9 @@
 #include <stdexcept>
-#include "opencv2/opencv.hpp"
+#include <opencv2/opencv.hpp>
 #include <random>
 #include <optional>
 #include <algorithm>
+
 using std::string, std::vector, std::cout,std::cerr,std::endl;
 
 std::pair<cv::Mat, std::optional<cv::Mat>> gaussJordan(cv::Mat X, bool change );

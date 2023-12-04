@@ -1,11 +1,8 @@
-#include <iostream>
 #include "main.hpp"
-#include "matrixMaker.hpp"
-#include "opencv2/opencv.hpp"
 
 
 int main(int argc, char *argv[]) {
-
+/*
     decoder d;
     /*cv::Mat dMessage = (cv::Mat_<int>(1, 16) << 1,0,0,1,0,1,0,1,1,1,1,0,0,0,0,1);
     cv::Mat H = (cv::Mat_<int>(16, 8) <<
@@ -30,12 +27,12 @@ int main(int argc, char *argv[]) {
     auto rtG=result.first;
     auto rx=result.second;
     cout<<"rtG\n"<<rtG<<endl;
-    cout<<"rx\n"<<rx<<endl;*/
-    
+    cout<<"rx\n"<<rx<<endl;
+    */
     coder c;
     matrixMaker a;
 
-    auto bMessage=c.stringToBinary("ah");
+    auto bMessage=c.stringToBinary("a");
 
     const int inStrLen=bMessage.cols;
     const int n = inStrLen*2 ;

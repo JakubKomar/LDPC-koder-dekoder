@@ -43,7 +43,7 @@ cv::Mat matrixMaker::makeParityCheckMatrix(int n_code, int d_v, int d_c, int see
     for (int i = 1; i < d_v; ++i) {
         cv::Mat permutedBlock;
         cv::transpose(block, permutedBlock);
-        std::shuffle(permutedBlock.begin<int>(), permutedBlock.end<int>(),rng);
+        permutedBlock=shuffleBlocks(permutedBlock,&rng);
         cv::transpose(permutedBlock, permutedBlock);
         permutedBlock.convertTo(H.rowRange(i * block_size, (i + 1) * block_size), CV_32S);
     }
@@ -76,4 +76,26 @@ cv::Mat matrixMaker::makeCodingMatrix(cv::Mat H)
     cv::Mat tG = binaryProduct(Q, Y);
 
     return tG;
+}
+
+cv::Mat matrixMaker::shuffleBlocks(cv::Mat matrix, std::default_random_engine * rd) {
+    int rows = matrix.rows;
+    int cols = matrix.cols;
+    int blockSize=cols;
+    std::vector<int> indices(rows);
+    std::iota(indices.begin(), indices.end(), 0);
+
+    // Náhodné zamíchání indexů
+
+    std::shuffle(indices.begin(), indices.end(), *rd);
+
+
+    // Naplnění výsledné matice permutovanými bloky
+    for (int i=0; i<rows; i++) {
+        auto aux = matrix.row(i).clone();
+        matrix.row(indices[i]).copyTo(matrix.row(i));
+        aux.copyTo(  matrix.row(indices[i]));
+
+    }
+    return matrix;
 }

@@ -4,24 +4,16 @@
 CFLAGS= -Wall -g 
 
 
-BIN=bms
-ZIP=222161.zip
+BIN=test
 CC=g++ 
-RM=rm -f
-SRC=main.cpp coder.cpp decoder.cpp matrixMaker.cpp matOp.cpp
+SRC=matrixGeneration.cpp ../coder.cpp ../decoder.cpp ../matrixMaker.cpp ../matOp.cpp
 
-.PHONY: all build run pack clean
+.PHONY: all build  clean
 
 all: build
 
 build: 
 	$(CC) $(CFLAGS) -o $(BIN) $(SRC) -I/usr/include/opencv4  -lopencv_core -lopencv_highgui -lopencv_imgproc
-
-pack: clean
-	zip  $(ZIP) * 
-
-run:
-	test -f $(BIN) && ./$(BIN)
 
 clean:
 	rm -rf $(BIN) $(ZIP) *.o 

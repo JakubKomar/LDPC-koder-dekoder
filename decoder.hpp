@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <bitset>
-#include "opencv2/opencv.hpp"
+#include <opencv2/opencv.hpp>
 #include "matOp.hpp"
 
 using  std::cout, std::endl, std::string; // using declaration
