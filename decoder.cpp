@@ -35,14 +35,10 @@ cv::Mat decoder::stringToMat(string X){
     return output.t();
 }
 
-int binaryProduct2(const cv::Mat& a, const cv::Mat& b) {
-    int result = 0;
-
-    for (int i = 0; i < a.cols; ++i) {
-        result += a.at<int>(0, i) * b.at<int>(0, i);
-    }
-
-    return result;
+int binaryProduct2(const cv::Mat& a, const cv::Mat& b) {   
+    auto result = matOp::shityMatrixMul(a, b.t());
+    
+    return result.at<int>(0, 0) %2;
 }
 
 cv::Mat decoder::get_message(cv::Mat G,cv::Mat r){
@@ -52,7 +48,7 @@ cv::Mat decoder::get_message(cv::Mat G,cv::Mat r){
     auto result = matOp::gaussElimination(G, r); 
     auto rtG = result.first;
     auto rx = result.second;
-
+    
     cv::Mat message = cv::Mat::zeros(1, k, CV_32S);
 
     message.at<int>(0, k - 1) = rx.at<int>(0, k - 1);
@@ -60,12 +56,10 @@ cv::Mat decoder::get_message(cv::Mat G,cv::Mat r){
         message.at<int>(0, i) = rx.at<int>(0, i);
         message.at<int>(0, i) -= binaryProduct2(rtG.row(i).colRange(i + 1, k), message.colRange(i + 1, k)); 
     }
-
-    // Convert to absolute values
-    cv::Mat absMessage;
-    cv::absdiff(message, cv::Scalar::all(0), absMessage);
-
-    return absMessage;
+    message.forEach<int>([](int& item, const int* position) -> void {
+        item %= 2;
+    });
+    return cv::abs(message);
 }
 
 cv::Mat decoder::decodeHardDecision(cv::Mat H, cv::Mat input, int maxIterations = 50) {
@@ -88,4 +82,17 @@ cv::Mat decoder::decodeHardDecision(cv::Mat H, cv::Mat input, int maxIterations 
     return L;
 }
 
+string decoder::convertBinaryVectorToString(cv::Mat input){
 
+    std::string result;
+
+    for (int i = 0; i < input.cols; i+=8) {
+        char c = 0;
+        for (int j = 0; j < 8; ++j) {
+            c += input.at<int>(0, i + j) << (7 - j);
+        }
+        result += c;
+    }
+
+    return result;
+}

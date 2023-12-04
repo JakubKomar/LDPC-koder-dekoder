@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
         coder c;
         matrixMaker a;
 
-        cv::Mat bMessage=c.stringToBinary("a");
+        cv::Mat bMessage=c.stringToBinary(getString());
 
         const int inStrLen=bMessage.cols;
         const int n = inStrLen*2 ;
@@ -69,14 +69,16 @@ int main(int argc, char *argv[]) {
 
         decoder c;
 
-        //cv::Mat bMessage=c.extractVector(getString());
-        cv::Mat  bMessage = (  cv::Mat_ <int>(1, 16) << 1,1,1,1,0,0,1,1,0,0,0,1,1,1,1,0);
+        cv::Mat bMessage=c.extractVector(getString());
+        //cv::Mat  bMessage = (  cv::Mat_ <int>(1, 16) << 1,1,1,1,0,0,1,1,0,0,0,1,1,1,1,0);
+    
         cout<<"bMessage:"<<endl<<bMessage<<endl;    
+        cv::bitwise_xor(bMessage, 1, bMessage);
+        cout<<"bMessageXor:"<<endl<<bMessage<<endl;
 
-        /*cv::Mat correctedMassege= c.decodeHardDecision(H,bMessage,50);
-        cout<<"correctedMassege:"<<endl<<correctedMassege<<endl;*/
         auto result =c.get_message(G,bMessage);   
         cout<<"result:"<<endl<<result<<endl;
+        cout<<c.convertBinaryVectorToString(result)<<endl;
         
     }
     else
