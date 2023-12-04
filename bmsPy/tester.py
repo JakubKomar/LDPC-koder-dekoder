@@ -55,6 +55,7 @@ print("Coded messageRaw:",codedMassage)
 d = decode(H, codedMassage, snr)
 print("Decoded message:",d)
 x = get_message(G, d)
+print("Decoded messageRaw:",x)
 
 ascii_retezec = ''.join([chr(int(''.join(map(str, x[i:i+8])), 2)) for i in range(0, len(x), 8)])
 print("Decoded massege:",ascii_retezec)

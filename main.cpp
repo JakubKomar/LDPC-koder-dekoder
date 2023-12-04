@@ -59,18 +59,24 @@ int main(int argc, char *argv[]) {
     else if(m==DECODE){
         if(matFilePath=="")
             throw std::invalid_argument("Missing argument -M");
+
         matrixMaker m;
-        decoder c;
+
         cv::Mat H = m.matrixFromFile(matFilePath);
         cout<<"H:"<<endl<<H<<endl;
         cv::Mat G = m.makeCodingMatrix(H);
-        cout<<"G:"<<endl<<H<<endl;
-        cv::Mat bMessage=c.extractVector(getString());
+        cout<<"G:"<<endl<<G<<endl;
 
-        /*const int inStrLen=bMessage.cols;
-        const int n = inStrLen ;
-        const int d_v = inStrLen/2-1;
-        const int d_c = inStrLen/2;*/
+        decoder c;
+
+        //cv::Mat bMessage=c.extractVector(getString());
+        cv::Mat  bMessage = (  cv::Mat_ <int>(1, 16) << 1,1,1,1,0,0,1,1,0,0,0,1,1,1,1,0);
+        cout<<"bMessage:"<<endl<<bMessage<<endl;    
+
+        /*cv::Mat correctedMassege= c.decodeHardDecision(H,bMessage,50);
+        cout<<"correctedMassege:"<<endl<<correctedMassege<<endl;*/
+        auto result =c.get_message(G,bMessage);   
+        cout<<"result:"<<endl<<result<<endl;
         
     }
     else

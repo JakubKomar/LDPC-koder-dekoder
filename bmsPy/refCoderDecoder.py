@@ -19,28 +19,8 @@ d_v = d_c-1
 snr = 20
 
 
-#H, G = make_ldpc(n, d_v, d_c,seed=42)
+H, G = make_ldpc(n, d_v, d_c,seed=42)
 
-original_matrix = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0],
-    [1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1],
-    [0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0],
-    [0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0],
-    [0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0],
-    [0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0],
-    [0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1],
-    [0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0],
-    [0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0],
-    [0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1],
-    [0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0],
-    [0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1]
-]
-
-# Převedení do formátu NumPy
-H = np.array(original_matrix)
-G=coding_matrix(H)
 
 print("Parity check matrix:\n",H,sep="")
 print("Coding matrix:\n",G,sep="")
@@ -59,7 +39,9 @@ print()
 
 
 d = decode(H, codedMassage, snr)
+print("Decoded message:",d)
 x = get_message(G, d)
+print("Decoded messageRaw:",x)
 
 ascii_retezec = ''.join([chr(int(''.join(map(str, x[i:i+8])), 2)) for i in range(0, len(x), 8)])
 print("Decoded massege:",ascii_retezec)

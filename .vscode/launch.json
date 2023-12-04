@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bms",
-            "args": ["-d","-M","matice.csv"],
+            "args": ["-d","-M","mat.csv"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

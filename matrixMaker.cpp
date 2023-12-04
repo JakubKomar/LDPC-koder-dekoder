@@ -98,7 +98,7 @@ cv::Mat matrixMaker::shuffleBlocks(cv::Mat matrix, std::default_random_engine * 
 }
 
 cv::Mat matrixMaker::matrixFromFile(string filePath){
-        std::ifstream file(filePath);
+    std::ifstream file(filePath);
     if (!file.is_open()) {
         std::cerr << "Unable to open file: " << filePath << std::endl;
         throw std::invalid_argument("Unable to open file.");
