@@ -1,8 +1,7 @@
 #include "matrixMaker.hpp"
 
-using std::string, std::vector, std::cout,std::cerr,std::endl;
 
-matrixMaker::matrixMaker(/* args */)
+matrixMaker::matrixMaker()
 {
 }
 
@@ -98,19 +97,22 @@ cv::Mat matrixMaker::shuffleBlocks(cv::Mat matrix, std::default_random_engine * 
 }
 
 cv::Mat matrixMaker::matrixFromFile(string filePath){
+
     std::ifstream file(filePath);
+
     if (!file.is_open()) {
         std::cerr << "Unable to open file: " << filePath << std::endl;
         throw std::invalid_argument("Unable to open file.");
     }
 
     std::vector<std::vector<int>> values;
-
     std::string line;
+
     while (std::getline(file, line)) {
         std::istringstream lineStream(line);
         std::string cell;
         std::vector<int> row;
+
         while (std::getline(lineStream, cell, ',')) {
             row.push_back(std::stod(cell));
         }
@@ -121,6 +123,7 @@ cv::Mat matrixMaker::matrixFromFile(string filePath){
     int rows = values.size();
     int cols = (rows > 0) ? values[0].size() : 0;
     cv::Mat matrix(rows, cols, CV_32S);
+
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             matrix.at<int>(i, j) = values[i][j];

@@ -9,9 +9,9 @@ int main(int argc, char *argv[]) {
 
     for(int i = 1; i < argc; i++) {
         string arg=argv[i];
-        if(string(arg) == "-h" || arg == string("--help")) {
-            printhelp();
-        }
+
+        if(string(arg) == "-h" || arg == string("--help")) 
+            printhelp();      
         else if(arg == string("-e") && m == NOTSET) {
             m = ENCODE;
         }
@@ -24,14 +24,20 @@ int main(int argc, char *argv[]) {
             matFilePath=argv[i+1];
             i++;
         }
-        else{
+        else
             printhelp();
-        }
     }
 
     if(m==NOTSET)
         printhelp();
-    else if(m==ENCODE){
+
+    auto getString = []() -> string {
+        string input;
+        getline(cin, input,'\n');
+        return input;
+    };
+    
+    if (m==ENCODE){
         coder c;
         matrixMaker a;
 
@@ -81,13 +87,6 @@ int main(int argc, char *argv[]) {
     
     return 0;
 }
-
-string getString() {
-    string input;
-    getline(cin, input,'\n');
-    return input;
-}
-
 
 void printhelp() {
     cout << 

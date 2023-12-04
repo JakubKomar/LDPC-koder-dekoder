@@ -5,10 +5,10 @@
 #include <fstream>
 #include "matOp.hpp"
 
+using std::string, std::vector, std::cout,std::cerr,std::endl;
+
 class matrixMaker
 {
-private:
-
 public:
     matrixMaker();
     ~matrixMaker();

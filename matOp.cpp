@@ -12,9 +12,8 @@ std::pair<cv::Mat, std::optional<cv::Mat>> gaussJordan(cv::Mat H, bool change = 
     int n = A.cols;
 
     cv::Mat P; 
-    if (change) {
+    if (change) 
         P = cv::Mat::eye(m, m, CV_32S);
-    }
 
     int pivotOld = -1; 
     for (int j = 0; j < n; ++j) { 
@@ -30,7 +29,6 @@ std::pair<cv::Mat, std::optional<cv::Mat>> gaussJordan(cv::Mat H, bool change = 
             pivotOld += 1;
 
             if (pivotOld != pivot) {
-                
                 cv::Mat aux = A.row(pivot).clone();
                 A.row(pivotOld).copyTo(A.row(pivot));
                 aux.copyTo(A.row(pivotOld));
@@ -54,18 +52,16 @@ std::pair<cv::Mat, std::optional<cv::Mat>> gaussJordan(cv::Mat H, bool change = 
         if (pivotOld == m - 1) {
             break;
         }
-        
     }
 
-    if (change) {
+    if (change) 
         P_return = P;
-    }
     return std::make_pair(A, P_return);
 }
 
 cv::Mat binaryProduct(cv::Mat X,  cv::Mat Y) {
 
-    X.convertTo(X, CV_32F);
+    X.convertTo(X, CV_32F); // protože X*Y; bere pouze floaty z nějakého důvodu
     Y.convertTo(Y, CV_32F);
 
     cv::Mat A=X*Y;
@@ -97,17 +93,14 @@ cv::Mat matrixMulNoRestrictions( cv::Mat X, cv::Mat Y){
 }
 
 std::pair<cv::Mat, cv::Mat> gaussElimination(cv::Mat A, cv::Mat b){
-
-    cv::Mat A_r = A.clone();
-    cv::Mat b_r = b.clone();
-
-    int n = A_r.rows;
-    int k = A_r.cols;
+    
+    int n = A.rows;
+    int k = A.cols;
 
     for (int j = 0; j < std::min(k, n); ++j) {
         std::vector<int> listDepivots;
         for (int i = j; i < n; ++i) {
-            if (A_r.at<int>(i, j)) {
+            if (A.at<int>(i, j)) {
                 listDepivots.push_back(i);
             }
         }
@@ -120,24 +113,25 @@ std::pair<cv::Mat, cv::Mat> gaussElimination(cv::Mat A, cv::Mat b){
 
 
         if (pivot != j) {
-            auto aux = A_r.row(j).clone();
-            A_r.row(pivot).copyTo(A_r.row(j));
-            aux.copyTo(A_r.row(pivot));
+            auto aux = A.row(j).clone();
+            A.row(pivot).copyTo(A.row(j));
+            aux.copyTo(A.row(pivot));
 
-            int aux1 = b_r.at<int>(j);
-            b_r.at<int>(j) = b_r.at<int>(pivot);
-            b_r.at<int>(pivot) = aux1;
+            int aux1 = b.at<int>(j);
+            b.at<int>(j) = b.at<int>(pivot);
+            b.at<int>(pivot) = aux1;
 
         }
 
         for (int i = j + 1; i < n; ++i) {
-            if (A_r.at<int>(i, j)) {
-                A_r.row(i) = cv::abs(A_r.row(i) - A_r.row(j));
-                b_r.at<int>(i) = std::abs(b_r.at<int>(i) - b_r.at<int>(j));
+            if (A.at<int>(i, j)) {
+                A.row(i) = cv::abs(A.row(i) - A.row(j));
+                b.at<int>(i) = std::abs(b.at<int>(i) - b.at<int>(j));
             }
         }
 
     }
-    return std::make_pair(A_r, b_r);
+    return std::make_pair(A, b);
+    
 }
 }

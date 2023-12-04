@@ -8,4 +8,3 @@
 using std::cout, std::endl, std::string, std::cin,std::getline,std::ends; 
 
 void printhelp();
-string getString();
