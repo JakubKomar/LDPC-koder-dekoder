@@ -80,13 +80,11 @@ cv::Mat matrixMaker::makeCodingMatrix(cv::Mat H)
 
 cv::Mat matrixMaker::shuffleBlocks(cv::Mat matrix, std::default_random_engine * rd) {
     int rows = matrix.rows;
-    int cols = matrix.cols;
-    int blockSize=cols;
+
     std::vector<int> indices(rows);
     std::iota(indices.begin(), indices.end(), 0);
 
     // Náhodné zamíchání indexů
-
     std::shuffle(indices.begin(), indices.end(), *rd);
 
 
@@ -95,7 +93,6 @@ cv::Mat matrixMaker::shuffleBlocks(cv::Mat matrix, std::default_random_engine * 
         auto aux = matrix.row(i).clone();
         matrix.row(indices[i]).copyTo(matrix.row(i));
         aux.copyTo(  matrix.row(indices[i]));
-
     }
     return matrix;
 }

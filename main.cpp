@@ -14,7 +14,6 @@ int main(int argc, char *argv[]) {
         }
         else if(arg == string("-e") && m == NOTSET) {
             m = ENCODE;
-            
         }
         else if(arg == string("-d")&& m == NOTSET){
             m = DECODE;
@@ -68,10 +67,10 @@ int main(int argc, char *argv[]) {
         cout<<"G:"<<endl<<H<<endl;
         cv::Mat bMessage=c.extractVector(getString());
 
-        const int inStrLen=bMessage.cols;
+        /*const int inStrLen=bMessage.cols;
         const int n = inStrLen ;
         const int d_v = inStrLen/2-1;
-        const int d_c = inStrLen/2;
+        const int d_c = inStrLen/2;*/
         
     }
     else
