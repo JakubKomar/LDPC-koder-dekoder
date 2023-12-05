@@ -1,27 +1,31 @@
-#BMS 2023 - Projekt 1
-#author: Jakub Komárek (xkomar33)
+# BMS 2023 - Projekt 1
+# author: Jakub Komárek (xkomar33)
 
-CFLAGS= -Wall -g 
-
-
-BIN=bms
-ZIP=222161.zip
-CC=g++ 
-RM=rm -f
-SRC=main.cpp coder.cpp decoder.cpp matrixMaker.cpp matOp.cpp
+CFLAGS = -Wall -g 
+BIN = bms
+ZIP = 222161.zip
+CC = g++
+RM = rm -f
+SRC = main.cpp coder.cpp decoder.cpp matrixMaker.cpp matOp.cpp
+OBJ = $(SRC:.cpp=.o)
 
 .PHONY: all build run pack clean
 
 all: build
 
-build: 
-	$(CC) $(CFLAGS) -o $(BIN) $(SRC) -I/usr/include/opencv4  -lopencv_core -lopencv_highgui -lopencv_imgproc
+build: $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(CFLAGS) -o $@ $^ -I/usr/include/opencv4 -lopencv_core -lopencv_highgui -lopencv_imgproc
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c $< -o $@ -I/usr/include/opencv4
 
 pack: clean
-	zip  $(ZIP) * 
+	zip $(ZIP) *
 
-run:
-	test -f $(BIN) && ./$(BIN)
+run: $(BIN)
+	./$(BIN)
 
 clean:
-	rm -rf $(BIN) $(ZIP) *.o 
+	$(RM) $(BIN) $(ZIP) $(OBJ)

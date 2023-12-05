@@ -14,5 +14,7 @@ namespace matOp{
 
     cv::Mat matrixMulNoRestrictions( cv::Mat X, cv::Mat Y);
     
+    cv::Mat matrixMulInt(cv::Mat X, cv::Mat Y) ;
+
     std::pair<cv::Mat, cv::Mat> gaussElimination(cv::Mat A, cv::Mat b);
 }

@@ -15,11 +15,12 @@ void test(){
 
     decoder d;
     cout<<"c:"<<endl<<c<<endl;
-    c.at<int>(0,1)=1;
     c.at<int>(0,7)=0;
+    //c.at<int>(0,7)=0;
+    //c.at<int>(0,6)=1;
 
     cout<<"c_damaged:"<<endl<<c<<endl;
-    auto result =d.hardDecitonDecoder(H,c,100);
+    auto result =d.mostFuckedBitMethod(H,c,69);
     cout<<"result:"<<endl<<result<<endl;
     exit(0);
 }
@@ -94,7 +95,7 @@ int main(int argc, char *argv[]) {
     else if(m==DECODE){
 
         if(matFilePath=="")
-            throw std::invalid_argument("Missing argument -M");
+            matFilePath="matica.csv";
 
         matrixMaker m;
 
@@ -108,15 +109,11 @@ int main(int argc, char *argv[]) {
         assert(H.cols==bMessage.cols);
         assert(H.rows==H.cols-2);
 
-        cout<<"bMessage:"<<endl<<bMessage<<endl;    
         cv::bitwise_xor(bMessage, 1, bMessage);
-        cout<<"bMessageXor:"<<endl<<bMessage<<endl;
-        
-        auto repairedMesss= c.hardDecitonDecoder(H,bMessage,100);
-        cout<<"repairedMesss:"<<endl<<repairedMesss<<endl;
-       
+        auto repairedMesss= c.mostFuckedBitMethod(H,bMessage,1000);
+
         auto result =c.get_message(G,repairedMesss);   
-        cout<<"result:"<<endl<<result<<endl;
+
         cout<<c.convertBinaryVectorToString(result)<<endl;
         
     }

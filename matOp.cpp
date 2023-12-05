@@ -72,6 +72,18 @@ cv::Mat binaryProduct(cv::Mat X,  cv::Mat Y) {
     return A;
 }
 
+cv::Mat matrixMulInt(cv::Mat X, cv::Mat Y) {
+
+    X.convertTo(X, CV_32F); // protože X*Y; bere pouze floaty z nějakého důvodu
+    Y.convertTo(Y, CV_32F);
+    cout<<X<<endl;
+    cout<<Y<<endl;
+    cv::Mat A=X*Y;
+    A.convertTo(A, CV_32S);
+
+    return A;
+}
+
 int binaryProductInt(const cv::Mat& a, const cv::Mat& b) {   
     auto result = matOp::matrixMulNoRestrictions(a, b.t());
     
