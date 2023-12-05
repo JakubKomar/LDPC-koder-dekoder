@@ -17,7 +17,7 @@ public:
     cv::Mat decodeHardDecision(cv::Mat H, cv::Mat input, int maxIterations) ;
     cv::Mat get_message(cv::Mat G,cv::Mat input);
     string convertBinaryVectorToString(cv::Mat input);
-    cv::Mat ldpcDecoder(const cv::Mat& H, const cv::Mat& input,int maxIterations);
+    cv::Mat hardDecitonDecoder(const cv::Mat& H, const cv::Mat& input,int maxIterations);
 private:
     string formatString(string input);
     cv::Mat stringToMat(string X);

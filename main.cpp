@@ -2,8 +2,31 @@
 
 enum mode {ENCODE,DECODE,NOTSET};
 
-int main(int argc, char *argv[]) {
 
+void test(){
+    cv::Mat H= (cv::Mat_<int>(4,8)<<
+        0, 1, 0, 1, 1, 0, 0, 1,
+        1, 1, 1, 0, 0, 1, 0, 0,
+        0, 0, 1, 0, 0, 1, 1, 1,
+        1, 0, 0, 1, 1, 0, 1, 0);
+
+    cv::Mat  c= (cv::Mat_<int>(1,8)<<
+        1, 0, 0, 1, 0, 1, 0, 1);
+
+    decoder d;
+    cout<<"c:"<<endl<<c<<endl;
+    c.at<int>(0,1)=1;
+    c.at<int>(0,7)=0;
+
+    cout<<"c_damaged:"<<endl<<c<<endl;
+    auto result =d.hardDecitonDecoder(H,c,100);
+    cout<<"result:"<<endl<<result<<endl;
+    exit(0);
+}
+
+
+int main(int argc, char *argv[]) {
+    //test();
     mode m = NOTSET;
     string matFilePath="";
 
@@ -85,17 +108,14 @@ int main(int argc, char *argv[]) {
         assert(H.cols==bMessage.cols);
         assert(H.rows==H.cols-2);
 
-
-        //cv::Mat  bMessage = (  cv::Mat_ <int>(1, 16) << 1,1,1,1,0,0,1,1,0,0,0,1,1,1,1,0);
-    
         cout<<"bMessage:"<<endl<<bMessage<<endl;    
         cv::bitwise_xor(bMessage, 1, bMessage);
         cout<<"bMessageXor:"<<endl<<bMessage<<endl;
         
-        /*auto repairedMesss= c.ldpcDecoder(H,bMessage,100);
-        cout<<"repairedMesss:"<<endl<<repairedMesss<<endl;*/
-
-        auto result =c.get_message(G,bMessage);   
+        auto repairedMesss= c.hardDecitonDecoder(H,bMessage,100);
+        cout<<"repairedMesss:"<<endl<<repairedMesss<<endl;
+       
+        auto result =c.get_message(G,repairedMesss);   
         cout<<"result:"<<endl<<result<<endl;
         cout<<c.convertBinaryVectorToString(result)<<endl;
         

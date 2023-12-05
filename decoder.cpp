@@ -89,7 +89,105 @@ cv::Mat decoder::decodeHardDecision(cv::Mat H, cv::Mat input, int maxIterations 
     return L;
 }
 
-cv::Mat decoder::ldpcDecoder(const cv::Mat& H, const cv::Mat& input,int maxIterations){
+bool checkParity(const cv::Mat& H, const cv::Mat& codeword) {
+    // Check if the codeword satisfies all parity checks
+    for (int i = 0; i < H.rows; ++i) {
+        cv::Mat check = H.row(i);
+        int syndrome = cv::countNonZero(matOp::matrixMulNoRestrictions(check,codeword.t())) % 2;
+        if (syndrome != 0) {
+            return false;  // Codeword is invalid
+        }
+    }
+
+    return true;  // Codeword is valid
+}
+
+void debugMailBox(std::vector< std::vector<int>> vNodesState){
+    cout<<"vNodesState:"<<endl;
+    for(auto & vNode: vNodesState){
+        for(auto & item: vNode){
+            cout<<item<<" ";    
+        }
+        cout<<endl;
+    }
+}
+
+// implementace na základě hard decition algoritmu z https://www.bernh.net/media/download/papers/ldpc.pdf
+cv::Mat decoder::hardDecitonDecoder(const cv::Mat& H, const cv::Mat& input,int maxIterations){
+    cv::Mat decoded = input.clone();
     
+    int cNodesCount= H.cols;
+    int vNodesCount= H.rows;
+
+    cv::Mat cNodesState=decoded.row(0).clone();
+    cv::Mat vNodesState=cv::Mat::zeros(vNodesCount,cNodesCount,CV_32S);
+    std::vector< std::vector<int>> cNodeMailBox(cNodesCount, std::vector<int> (0));
+
+    bool checkCompleted=false;
+
+    for (int i = 0; i < maxIterations; i++){
+    
+        for (int vNode_i = 0; vNode_i < vNodesCount; vNode_i++){ // step 1
+            for(int cNode_i=0; cNode_i<cNodesCount;cNode_i++){ 
+                if(H.at<int>(vNode_i,cNode_i)==1){
+                    vNodesState.at<int>(vNode_i,cNode_i)=cNodesState.at<int>(0,cNode_i);
+                }
+            }        
+        }
+        //cout<<"vNodesState:"<<endl<<vNodesState<<endl;
+     
+
+        for(int vNode_i=0; vNode_i<vNodesCount;vNode_i++){ //step 2
+            for(int cNode_i=0; cNode_i<cNodesCount;cNode_i++){ 
+                if(H.at<int>(vNode_i,cNode_i)==1){
+                    int aux = vNodesState.at<int>(vNode_i,cNode_i);
+                    vNodesState.at<int>(vNode_i,cNode_i)=0;
+
+                    int sum=0;
+                    for(int cNode_j=0; cNode_j<cNodesCount;cNode_j++){ 
+                        sum+=vNodesState.at<int>(vNode_i,cNode_j);
+                    } 
+                    int xorVal = sum%2; 
+                    
+                    cNodeMailBox.at(cNode_i).push_back(xorVal);
+                    vNodesState.at<int>(vNode_i,cNode_i)=aux;
+                }
+            }
+        }
+        
+        for(int cNode_i=0; cNode_i<cNodesCount;cNode_i++) //step 3         
+            cNodeMailBox.at(cNode_i).push_back(cNodesState.at<int>(0,cNode_i)); 
+
+        debugMailBox(cNodeMailBox);
+        
+        bool haveBeenCorected=false;
+        for(int cNode_i=0; cNode_i<cNodesCount;cNode_i++){ //step 3
+            int sumOfOnes=0;
+            int sumOfzeros=0;
+            for(auto & item: cNodeMailBox.at(cNode_i)){
+                if(item==0)
+                    sumOfzeros++;
+                else if(item==1)
+                    sumOfOnes++;
+                else    
+                    assert(false);
+            }
+            int decitonBit = sumOfOnes>sumOfzeros?1:0;
+            if(cNodesState.at<int>(0,cNode_i)!=decitonBit){
+                haveBeenCorected=true;
+                cNodesState.at<int>(0,cNode_i)=decitonBit;
+            }
+            cNodeMailBox.at(cNode_i).clear();
+        }
+        
+        if(!haveBeenCorected){
+            checkCompleted=true;
+            break;
+        }
+    }
+    if(!checkCompleted){
+        cerr<<"Decoding failed"<<endl;
+    }
+    return cNodesState;
 
 }
