@@ -38,8 +38,9 @@ int main(int argc, char *argv[]) {
     };
     
     if (m==ENCODE){
+
         coder c;
-        matrixMaker a;
+        matrixMaker m;
 
         cv::Mat bMessage=c.stringToBinary(getString());
 
@@ -48,18 +49,27 @@ int main(int argc, char *argv[]) {
         const int d_v = inStrLen-1;
         const int d_c = inStrLen;
         
-        #define SEED 42
-        cv::Mat H =a.makeParityCheckMatrix(n,d_v,d_c,SEED);
-        cv::Mat G = a.makeCodingMatrix(H);
+        cv::Mat H;
+        cv::Mat G;
 
-
-        if(matFilePath!="")
-            a.saveMatrixToCSV(H,matFilePath);
+        if(matFilePath!=""){
+            H = m.matrixFromFile(matFilePath);
+            G = m.makeCodingMatrix(H);
+            assert(H.cols==n);
+            assert(H.rows==H.cols-2);
+        }
+        else{
+            #define SEED 42
+            H = m.makeParityCheckMatrix(n,d_v,d_c,SEED);
+            G = m.makeCodingMatrix(H);
+            m.saveMatrixToCSV(H,"matica.csv");
+        }
         
         const auto cMessage=c.encode(G,bMessage);
         std::cout<<c.matToString(cMessage)<<std::endl;  
     }
     else if(m==DECODE){
+
         if(matFilePath=="")
             throw std::invalid_argument("Missing argument -M");
 
@@ -71,11 +81,19 @@ int main(int argc, char *argv[]) {
         decoder c;
 
         cv::Mat bMessage=c.extractVector(getString());
+        
+        assert(H.cols==bMessage.cols);
+        assert(H.rows==H.cols-2);
+
+
         //cv::Mat  bMessage = (  cv::Mat_ <int>(1, 16) << 1,1,1,1,0,0,1,1,0,0,0,1,1,1,1,0);
     
         cout<<"bMessage:"<<endl<<bMessage<<endl;    
         cv::bitwise_xor(bMessage, 1, bMessage);
         cout<<"bMessageXor:"<<endl<<bMessage<<endl;
+        
+        /*auto repairedMesss= c.ldpcDecoder(H,bMessage,100);
+        cout<<"repairedMesss:"<<endl<<repairedMesss<<endl;*/
 
         auto result =c.get_message(G,bMessage);   
         cout<<"result:"<<endl<<result<<endl;

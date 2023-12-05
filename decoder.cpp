@@ -54,6 +54,21 @@ cv::Mat decoder::get_message(cv::Mat G,cv::Mat r){
     return cv::abs(message);
 }
 
+string decoder::convertBinaryVectorToString(cv::Mat input){
+
+    std::string result;
+
+    for (int i = 0; i < input.cols; i+=8) {
+        char c = 0;
+        for (int j = 0; j < 8; ++j) {
+            c += input.at<int>(0, i + j) << (7 - j);
+        }
+        result += c;
+    }
+
+    return result;
+}
+
 cv::Mat decoder::decodeHardDecision(cv::Mat H, cv::Mat input, int maxIterations = 50) {
     cv::Mat L = input.clone();
 
@@ -74,17 +89,7 @@ cv::Mat decoder::decodeHardDecision(cv::Mat H, cv::Mat input, int maxIterations 
     return L;
 }
 
-string decoder::convertBinaryVectorToString(cv::Mat input){
+cv::Mat decoder::ldpcDecoder(const cv::Mat& H, const cv::Mat& input,int maxIterations){
+    
 
-    std::string result;
-
-    for (int i = 0; i < input.cols; i+=8) {
-        char c = 0;
-        for (int j = 0; j < 8; ++j) {
-            c += input.at<int>(0, i + j) << (7 - j);
-        }
-        result += c;
-    }
-
-    return result;
 }

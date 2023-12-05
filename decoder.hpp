@@ -17,8 +17,8 @@ public:
     cv::Mat decodeHardDecision(cv::Mat H, cv::Mat input, int maxIterations) ;
     cv::Mat get_message(cv::Mat G,cv::Mat input);
     string convertBinaryVectorToString(cv::Mat input);
+    cv::Mat ldpcDecoder(const cv::Mat& H, const cv::Mat& input,int maxIterations);
 private:
     string formatString(string input);
     cv::Mat stringToMat(string X);
-    int binaryProduct2(const cv::Mat& a, const cv::Mat& b);
 };
