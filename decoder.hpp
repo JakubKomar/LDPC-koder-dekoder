@@ -18,8 +18,6 @@ public:
     cv::Mat get_message(cv::Mat G,cv::Mat input);
     string convertBinaryVectorToString(cv::Mat input);
     cv::Mat hardDecitonDecoder(const cv::Mat& H, const cv::Mat& input,int maxIterations);
-    cv::Mat bitFlipingAlgorithm(const cv::Mat& H, const cv::Mat& input,int maxIterations);
-    cv::Mat ldpcCorrection(const cv::Mat& H, const cv::Mat& m, int iterations);
     cv::Mat mostFuckedBitMethod(const cv::Mat& H, const cv::Mat& m, int iterations);
 private:
     string formatString(string input);

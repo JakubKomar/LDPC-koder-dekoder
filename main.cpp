@@ -3,28 +3,7 @@
 enum mode {ENCODE,DECODE,NOTSET};
 
 
-void test(){
-    cv::Mat H= (cv::Mat_<int>(4,8)<<
-        0, 1, 0, 1, 1, 0, 0, 1,
-        1, 1, 1, 0, 0, 1, 0, 0,
-        0, 0, 1, 0, 0, 1, 1, 1,
-        1, 0, 0, 1, 1, 0, 1, 0);
-
-    cv::Mat  c= (cv::Mat_<int>(1,8)<<
-        1, 0, 0, 1, 0, 1, 0, 1);
-
-    decoder d;
-    cout<<"c:"<<endl<<c<<endl;
-    c.at<int>(0,7)=0;
-    //c.at<int>(0,7)=0;
-    //c.at<int>(0,6)=1;
-
-    cout<<"c_damaged:"<<endl<<c<<endl;
-    auto result =d.mostFuckedBitMethod(H,c,69);
-    cout<<"result:"<<endl<<result<<endl;
-    exit(0);
-}
-
+void test();
 
 int main(int argc, char *argv[]) {
     //test();
@@ -110,7 +89,7 @@ int main(int argc, char *argv[]) {
         assert(H.rows==H.cols-2);
 
         cv::bitwise_xor(bMessage, 1, bMessage);
-        auto repairedMesss= c.mostFuckedBitMethod(H,bMessage,1000);
+        auto repairedMesss= c.mostFuckedBitMethod(H,bMessage,69);
 
         auto result =c.get_message(G,repairedMesss);   
 
@@ -137,4 +116,26 @@ Argumenty:
     -M "matice.csv" - matice pro kodovani/dekodovani, pokud není je vygenerována
 )"""";
     exit(0);    
+}
+
+void test(){
+    cv::Mat H= (cv::Mat_<int>(4,8)<<
+        0, 1, 0, 1, 1, 0, 0, 1,
+        1, 1, 1, 0, 0, 1, 0, 0,
+        0, 0, 1, 0, 0, 1, 1, 1,
+        1, 0, 0, 1, 1, 0, 1, 0);
+
+    cv::Mat  c= (cv::Mat_<int>(1,8)<<
+        1, 0, 0, 1, 0, 1, 0, 1);
+
+    decoder d;
+    cout<<"c:"<<endl<<c<<endl;
+    c.at<int>(0,7)=0;
+    //c.at<int>(0,7)=0;
+    //c.at<int>(0,6)=1;
+
+    cout<<"c_damaged:"<<endl<<c<<endl;
+    auto result =d.hardDecitonDecoder(H,c,69);
+    cout<<"result:"<<endl<<result<<endl;
+    exit(0);
 }

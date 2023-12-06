@@ -9,6 +9,18 @@ matrixMaker::~matrixMaker()
 {
 }
 
+/**
+ * Vytváří systémovou matici pro LDPC (Low-Density Parity-Check) kód.
+ *
+ * Tato metoda generuje systémovou matici H pro LDPC kód s danými parametry:
+ *
+ * @param n_code Délka kódu (počet sloupců matice H).
+ * @param d_v Počet paritních rovnic 
+ * @param d_c Počet bitů ve každá parity check rovnici. Musí bý větší nebo rovna než d_v a musí dělit n.
+ * @param seed Počáteční hodnota pro generátor náhodných čísel. 
+ * @return Systémová matice H pro LDPC kód.
+ * @throws std::invalid_argument Pokud jsou nesplněny požadované podmínky pro parametry.
+ */
 cv::Mat matrixMaker::makeParityCheckMatrix(int n_code, int d_v, int d_c, int seed)
 {
     std::default_random_engine rng(seed);
@@ -52,18 +64,25 @@ cv::Mat matrixMaker::makeParityCheckMatrix(int n_code, int d_v, int d_c, int see
     return H;
 }
 
+/**
+ * Vytváří kódovací matici zadanou systémovou maticí H.
+ *
+ * Tato metoda přijímá systémovou matici H a generuje kódovací matici pro lineární blokový kód
+ * pomocí postupu double Gauss-Jordan elimination.
+ *
+ * @param H Systémová matice (paritní kontrolní matice) kódu.
+ * @return Kódovací matice pro zadaný lineární blokový kód.
+ */
 cv::Mat matrixMaker::makeCodingMatrix(cv::Mat H)
 {
     int n_code = H.cols; 
 
-    // DOUBLE GAUSS-JORDAN:
 
     auto result = matOp::gaussJordan(H.t(), true);
     cv::Mat Href_colonnes = result.first;
     cv::Mat tQ = result.second.value();
 
     cv::Mat Href_diag =matOp::gaussJordan(Href_colonnes.t(), false).first;
-
 
     cv::Mat Q = tQ.t();
 
@@ -77,6 +96,16 @@ cv::Mat matrixMaker::makeCodingMatrix(cv::Mat H)
     return tG;
 }
 
+/**
+ * Zamíchá bloky v matici náhodným způsobem.
+ *
+ * Tato metoda přijímá matici (matrix) a generátor náhodných čísel (rd), a náhodně zamíchá bloky v matici
+ * pomocí permutovaných indexů. Míchány jsou pouze řádky matice, nikoliv všechny položky matice.
+ *
+ * @param matrix Matice, ve které budou bloky zamíchány.
+ * @param rd Generátor náhodných čísel pro permutaci indexů.
+ * @return Matice s náhodně zamíchanými bloky.
+ */
 cv::Mat matrixMaker::shuffleBlocks(cv::Mat matrix, std::default_random_engine * rd) {
     int rows = matrix.rows;
 
@@ -96,6 +125,15 @@ cv::Mat matrixMaker::shuffleBlocks(cv::Mat matrix, std::default_random_engine * 
     return matrix;
 }
 
+/**
+ * Načítá matici ze souboru ve formátu CSV.
+ *
+ * Tato metoda přijímá cestu k souboru (filePath) a načte matici z tohoto souboru ve formátu CSV.
+ *
+ * @param filePath Cesta k souboru, ze kterého bude matice načtena.
+ * @return Načtená matice ze souboru.
+ * @throws std::invalid_argument Pokud se nepodaří otevřít soubor.
+ */
 cv::Mat matrixMaker::matrixFromFile(string filePath){
 
     std::ifstream file(filePath);
@@ -119,7 +157,6 @@ cv::Mat matrixMaker::matrixFromFile(string filePath){
         values.push_back(row);
     }
 
-    // Vytvoření matice z načtených hodnot
     int rows = values.size();
     int cols = (rows > 0) ? values[0].size() : 0;
     cv::Mat matrix(rows, cols, CV_32S);
@@ -133,6 +170,14 @@ cv::Mat matrixMaker::matrixFromFile(string filePath){
     return matrix;
 }
 
+/**
+ * Ukládá matici do souboru ve formátu CSV.
+ *
+ * Tato metoda přijímá matici (cv::Mat) a cestu k souboru (filePath), do kterého bude uložena.
+ *
+ * @param matrix Matice, která bude uložena do souboru.
+ * @param filePath Cesta k souboru, do kterého bude matice uložena.
+ */
 void matrixMaker::saveMatrixToCSV(const cv::Mat& matrix, const std::string& filePath) {
 
     std::ofstream file(filePath);
