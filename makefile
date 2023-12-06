@@ -1,7 +1,7 @@
 # BMS 2023 - Projekt 1
 # author: Jakub Komárek (xkomar33)
 
-CFLAGS = -Wall -g 
+CFLAGS = -Wall -g -O3 -std=c++17
 BIN = bms
 ZIP = 222161.zip
 CC = g++
@@ -22,7 +22,7 @@ $(BIN): $(OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@ -I/usr/include/opencv4
 
 pack: clean
-	zip $(ZIP) *
+	zip $(ZIP) *.cpp *.hpp README.md makefile
 
 run: $(BIN)
 	./$(BIN)

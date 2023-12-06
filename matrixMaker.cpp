@@ -1,14 +1,5 @@
 #include "matrixMaker.hpp"
 
-
-matrixMaker::matrixMaker()
-{
-}
-
-matrixMaker::~matrixMaker()
-{
-}
-
 /**
  * Vytváří systémovou matici pro LDPC (Low-Density Parity-Check) kód.
  *
@@ -21,7 +12,7 @@ matrixMaker::~matrixMaker()
  * @return Systémová matice H pro LDPC kód.
  * @throws std::invalid_argument Pokud jsou nesplněny požadované podmínky pro parametry.
  */
-cv::Mat matrixMaker::makeParityCheckMatrix(int n_code, int d_v, int d_c, int seed)
+cv::Mat matrixMaker::makeParityCheckMatrix(const int n_code, const int d_v,const  int d_c, const int seed)
 {
     std::default_random_engine rng(seed);
 
@@ -73,7 +64,7 @@ cv::Mat matrixMaker::makeParityCheckMatrix(int n_code, int d_v, int d_c, int see
  * @param H Systémová matice (paritní kontrolní matice) kódu.
  * @return Kódovací matice pro zadaný lineární blokový kód.
  */
-cv::Mat matrixMaker::makeCodingMatrix(cv::Mat H)
+cv::Mat matrixMaker::makeCodingMatrix(const cv::Mat &H)
 {
     int n_code = H.cols; 
 
@@ -134,7 +125,7 @@ cv::Mat matrixMaker::shuffleBlocks(cv::Mat matrix, std::default_random_engine * 
  * @return Načtená matice ze souboru.
  * @throws std::invalid_argument Pokud se nepodaří otevřít soubor.
  */
-cv::Mat matrixMaker::matrixFromFile(string filePath){
+cv::Mat matrixMaker::matrixFromFile(const string &filePath){
 
     std::ifstream file(filePath);
 

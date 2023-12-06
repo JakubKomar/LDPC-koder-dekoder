@@ -1,10 +1,5 @@
 #include "main.hpp"
 
-enum mode {ENCODE,DECODE,NOTSET};
-
-
-void test();
-
 int main(int argc, char *argv[]) {
     //test();
     mode m = NOTSET;

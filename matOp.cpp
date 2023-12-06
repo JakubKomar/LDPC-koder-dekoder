@@ -150,7 +150,7 @@ int binaryProductInt(const cv::Mat& a, const cv::Mat& b) {
  * @param Y Druhá matice pro násobení.
  * @return cv::Mat Matice obsahující výsledky násobení prvků z matic X a Y.
  */
-cv::Mat matrixMulNoRestrictions( cv::Mat X, cv::Mat Y){
+cv::Mat matrixMulNoRestrictions(const cv::Mat &X, const cv::Mat &Y){
 
     cv::Mat result(1,X.rows, CV_32S, cv::Scalar(0));
 

@@ -1,20 +1,12 @@
 #include "coder.hpp"
 
-coder::coder()
-{
-}
-
-coder::~coder()
-{
-}
-
-cv::Mat coder::stringToBinary(string input){
-    input= formatString(input);
+cv::Mat coder::stringToBinary(const string &input){
+    string cleanInput= formatString(input);
     
-    cv::Mat binaryVector(1, input.length()*8, CV_32S);
+    cv::Mat binaryVector(1, cleanInput.length()*8, CV_32S);
 
     int charCounter = 0;
-    for (char c : input) {
+    for (char c : cleanInput) {
         std::bitset<8> binaryRepresentation(c);
 
         for (int i = 7; i >=0; --i) {
@@ -26,7 +18,16 @@ cv::Mat coder::stringToBinary(string input){
     return binaryVector;
 }
 
-string coder::formatString(string input){
+/**
+ * Metoda pro formátování vstupního řetězce.
+ *
+ * Tato metoda provádí formátování vstupního řetězce tak, aby obsahoval pouze
+ * alfanumerické znaky (písmena a číslice). Všechny ostatní znaky jsou vynechány.
+ *
+ * @param input Vstupní řetězec, který chcete formátovat.
+ * @return std::string Formátovaný řetězec obsahující pouze alfanumerické znaky.
+ */
+string coder::formatString(const string &input){
     string output;
 
     for (auto & c: input){
@@ -38,7 +39,17 @@ string coder::formatString(string input){
     return output;
 }
 
-cv::Mat coder::encode(cv::Mat G, cv::Mat v){
+/**
+ * Metoda pro kódování binárního vektoru pomocí generující matice.
+ *
+ * Tato metoda kóduje binární vektor využitím generující matice G pro LDPC kódování.
+ * Kódování probíhá násobením vstupního vektoru maticí G a aplikací operace XOR s hodnotou 1.
+ *
+ * @param G Generující matice LDPC kódu.
+ * @param v Binární vektor, který chcete zakódovat.
+ * @return cv::Mat Kódovaný binární vektor.
+ */
+cv::Mat coder::encode(const cv::Mat &G, const cv::Mat &v){
     cv::Mat d = matOp::matrixMulNoRestrictions(G, v.t());	
 
     d.forEach<int>([](int& item, const int* position) -> void {
@@ -48,7 +59,16 @@ cv::Mat coder::encode(cv::Mat G, cv::Mat v){
     return d;
 }
 
-string coder::matToString(cv::Mat X){
+/**
+ * Konverze binární matice na řetězec.
+ *
+ * Tato metoda převádí binární matici na řetězec, kde každý prvek matice
+ * je reprezentován jako znak v řetězci.
+ *
+ * @param X Binární matice, kterou chcete převést na řetězec.
+ * @return std::string Řetězec reprezentující binární matici.
+ */
+string coder::matToString(const cv::Mat &X){
     std::stringstream ss;
     
     for (int i = 0; i < X.rows; ++i) {
