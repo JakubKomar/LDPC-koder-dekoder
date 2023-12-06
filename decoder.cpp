@@ -1,3 +1,16 @@
+/**
+ * @file decoder.cpp
+ * @brief Implementace třídy decider pro LDPC dekódování.
+ *
+ * Tato třída poskytuje metody pro kódování binárních vektorů
+ * pomocí LDPC kódů. Implementuje operace, jako je dekódování vektoru,
+ * oprava vektoru různými metodamy a formátování řetězců pro vstup do třídy.
+ * a další související funkce pro práci s LDPC kódy.
+ *
+ * @author Bc. Jakub Komárek
+ * @year 2023
+ */
+
 #include "decoder.hpp"
 
 /**
@@ -248,7 +261,7 @@ cv::Mat decoder::hardDecitonDecoder(const cv::Mat& H, const cv::Mat& input,int m
  * @param iterations Maximální počet iterací pro korekci.
  * @return cv::Mat Korektní binární vektor po provedení korekce.
  */
-cv::Mat decoder::mostFuckedBitMethod(const cv::Mat& H, const cv::Mat& m, int iterations) {
+cv::Mat decoder::mostConflictBit(const cv::Mat& H, const cv::Mat& m, int iterations) {
     cv::Mat correctedMessage = m.clone();
     
     for (int iter = 0; iter < iterations; ++iter) {

@@ -1,3 +1,15 @@
+/**
+ * @file marixMaker.hpp
+ * @brief dektlarace specifických maticových operací.
+ *
+ * Tato třída poskytuje deklarace metod pro vytváření matic pro LDPC kódování a dekódování. 
+ * Dále obsahuje metody pro ukládání těchto matic do souborů a načítání z nich.
+ *
+ * @author Bc. Jakub Komárek
+ * @year 2023
+ */
+#pragma once
+
 #include <stdexcept>
 #include <opencv2/opencv.hpp>
 #include <random>

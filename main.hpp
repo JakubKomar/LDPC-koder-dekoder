@@ -1,3 +1,12 @@
+/**
+ * @file main.hpp
+ * @brief main deklarace pro ldpc kódování a dekódování.
+ * 
+ * @author Bc. Jakub Komárek
+ * @year 2023
+ */
+#pragma once
+
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
@@ -19,6 +28,10 @@ enum mode {
     DECODE,
     NOTSET
 };
+
+#define HARD_DECITION 0
+#define MOST_CONFLICT_BIT 1
+
 
 void printhelp();
 void test();

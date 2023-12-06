@@ -1,6 +1,18 @@
+/**
+ * @file main.cpp
+ * @brief main funkce pro ldpc kódování a dekódování.
+ * 
+ * @author Bc. Jakub Komárek
+ * @year 2023
+ */
 #include "main.hpp"
 
+
+#define SEED 42
+#define CORRECTION_METHOD MOST_CONFLICT_BIT
+#define CORRECTION_ITERATIONS 69
 int main(int argc, char *argv[]) {
+  
     //test();
     mode m = NOTSET;
     string matFilePath="";
@@ -57,7 +69,6 @@ int main(int argc, char *argv[]) {
             assert(H.rows==H.cols-2);
         }
         else{
-            #define SEED 42
             H = m.makeParityCheckMatrix(n,d_v,d_c,SEED);
             G = m.makeCodingMatrix(H);
             m.saveMatrixToCSV(H,"matica.csv");
@@ -84,7 +95,14 @@ int main(int argc, char *argv[]) {
         assert(H.rows==H.cols-2);
 
         cv::bitwise_xor(bMessage, 1, bMessage);
-        auto repairedMesss= c.mostFuckedBitMethod(H,bMessage,69);
+
+        #if CORRECTION_METHOD==HARD_DECITION
+            auto repairedMesss= c.hardDecitonDecoder(H,bMessage,CORRECTION_ITERATIONS);
+        #elif CORRECTION_METHOD==MOST_CONFLICT_BIT
+            auto repairedMesss= c.mostConflictBit(H,bMessage,CORRECTION_ITERATIONS);
+        #else
+            assert(false&&"Unknown correction method")
+        #endif
 
         auto result =c.get_message(G,repairedMesss);   
 
@@ -96,6 +114,9 @@ int main(int argc, char *argv[]) {
     
     return 0;
 }
+#undef SEED
+#undef CORRECTION_METHOD
+#undef CORRECTION_ITERATIONS
 
 void printhelp() {
     cout << 

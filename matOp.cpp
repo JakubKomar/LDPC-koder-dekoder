@@ -1,3 +1,13 @@
+
+/**
+ * @file matOp.cpp
+ * @brief implementace specifických maticových operací.
+ *
+ * Tento soubor poskytuje specifické maticové operace pro potřeby LDPC kódování a dekódování.
+ *
+ * @author Bc. Jakub Komárek
+ * @year 2023
+ */
 #include "matOp.hpp"
 
 namespace matOp{

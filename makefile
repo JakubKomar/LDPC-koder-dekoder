@@ -1,7 +1,8 @@
-# BMS 2023 - Projekt 1
-# author: Jakub Komárek (xkomar33)
+# BMS 2023 - Projekt 
+# LDPC kódování a dekódování
+# author: Bc. Jakub Komárek (xkomar33) 
 
-CFLAGS = -Wall -g -O3 -std=c++17
+CFLAGS = -Wall -Werror -O3 -std=c++17
 BIN = bms
 ZIP = 222161.zip
 CC = g++

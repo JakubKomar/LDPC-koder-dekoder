@@ -1,3 +1,15 @@
+/**
+ * @file matrixMaker.cpp
+ * @brief dektlarace specifických maticových operací.
+ *
+ * Tato třída poskytuje metody pro vytváření matic pro LDPC kódování a dekódování. 
+ * Dále obsahuje metody pro ukládání těchto matic do souborů a načítání z nich.
+ * Implementace generátoru matic vychází z knihovny pyldpc - https://github.com/hichamjanati/pyldpc.
+ *
+ * @author Bc. Jakub Komárek
+ * @year 2023
+ */
+
 #include "matrixMaker.hpp"
 
 /**
