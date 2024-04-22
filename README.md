@@ -1,4 +1,4 @@
-# Projekt BMS - LDPC kódování a dekódování
+# LDPC koder a dekoder
 
 Tento projekt implementuje jednoduchou konzolovou aplikaci (bms) v jazyce C/C++, která provádí kódování a dekódování vstupní zprávy pomocí Low-density parity-check (LDPC) kódu s poměrem kódování ½.
 Parametry
